@@ -1,7 +1,11 @@
 'use strict';
 let path = require('path');
 let defaultSettings = require('./defaults');
+// 导入postcss模块
+let postcss = require('postcss');
 
+/*安装node-sass会报错解决方法，
+npm install --save-dev node-sass --registry=https://registry.npm.taobao.org --disturl=https://npm.taobao.org/dist --sass-binary-site=http://npm.taobao.org/mirrors/node-sass*/
 
 // Additional npm or bower modules to include in builds
 // Add all foreign plugins you may need into this array
@@ -27,6 +31,13 @@ module.exports = {
     port: defaultSettings.port,
     publicPath: defaultSettings.publicPath,
     noInfo: false
+  },
+  postcss: function () {
+      return [
+          require('autoprefixer')({
+              browsers: ['last 2 versions', 'ie >= 8']
+          })
+      ];
   },
   resolve: {
     extensions: ['', '.js', '.jsx'],
