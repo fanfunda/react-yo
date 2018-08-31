@@ -68,36 +68,32 @@ class AppComponent extends React.Component {
             h_y = hPosRange.h_y,                          // 获取  y位置信息
             vPosRange = Constant.vPosRange,             // 获取  顶部位置信息
             v_x = vPosRange.v_x,                          // 获取  顶部x位置信息
-            v_y = vPosRange.v_y,                          // 获取  顶部y位置信息
-
-            // 获取顶部图片index并处理
-            imgsArrangeTopArr = [],
-            topImgNum = Math.ceil(Math.random() * 2),  // 取一个或者不取
-            topImgSpliceIndex = 0,
+            v_y = vPosRange.v_y;                          // 获取  顶部y位置信息
 
         // 获取居中图片index并居中处理
-        imgsArrangeArrCenter = imgsArrangeArr.splice(centerIndex,1);
-        // 首先居中 centerIndex 的图片
-        imgsArrangeArrCenter[0].pos = centerPos;
+        var imgsArrangeArrCenter = imgsArrangeArr.splice(centerIndex,1);
+        imgsArrangeArrCenter.pos = centerPos;
 
-        // 去除要布局上方的图片的状态信息
-        topImgSpliceIndex = Math.ceil(Math.random() * (imgsArrangeArr.length
-            - topImgNum));
-        imgsArrangeTopArr = imgsArrangeArr.splice(topImgSpliceIndex,topImgNum);
+        // 获取顶部图片index并处理
+        var topImgNum = Math.ceil(Math.random() * 2),
+            topIndex = 0,
+            imgsArrangeArrTop = [];
 
-        // 布局位于上方的图片
-        imgsArrangeTopArr.forEach(function(value,index){
-            imgsArrangeTopArr[index].pos = {
-                left: getRangeRandom(v_x[0],v_x[1]),
-                top: getRangeRandom(v_y[0],v_y[1])
-            };
-        });
-
+        if (topImgNum) {
+            topIndex = Math.ceil(Math.random() * (imgsArrangeArr.length - topImgNum + 1));
+            imgsArrangeArrTop = imgsArrangeArr.splice(topIndex,topImgNum);
+            // 布局位于上方的图片
+            imgsArrangeArrTop.forEach(function(value,index){
+                imgsArrangeArrTop[index].pos = {
+                    left: getRangeRandom(v_x[0],v_x[1]),
+                    top: getRangeRandom(v_y[0],v_y[1])
+                };
+            });
+        }
         //获取水平方向上的图片信息并处理
         var k = Math.ceil(imgsArrangeArr.length / 2);
         for (var i = 0; i <  imgsArrangeArr.length; i++) {
-            // 前半部分布局左边，后半部分布局右边
-            if (i < k) {
+            if (i<k) {
                 imgsArrangeArr[i].pos = {
                     left:  getRangeRandom(h_leftSecX[0],h_leftSecX[1]),
                     top: getRangeRandom(h_y [0],h_y [1])
@@ -112,12 +108,13 @@ class AppComponent extends React.Component {
 
         // 将取出的数组元素修改之后放回去
         // 顶部图片
-        if (imgsArrangeArr && imgsArrangeTopArr[0]) {
-            imgsArrangeArr.splice(topImgSpliceIndex,0,imgsArrangeTopArr[0]);
+        if (imgsArrangeArr && imgsArrangeArrTop) {
+            for (var i = topImgNum - 1; i >= 0; i--) {
+                imgsArrangeArr.splice(topIndex,0,imgsArrangeArrTop[i]);
+            }
         }
-
         // 中间图片
-        imgsArrangeArr.splice(centerIndex,0,imgsArrangeArrCenter[0]);
+        imgsArrangeArr.splice(centerIndex,0,imgsArrangeArrCenter);
 
         this.setState({
             imgsArrangeArr: imgsArrangeArr
