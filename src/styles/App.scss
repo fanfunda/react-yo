@@ -91,6 +91,7 @@ html, body {
         box-sizing: border-box;
         transform: rotateY(180deg) translateZ(1px);
         backface-visibility: hidden;
+        z-index: 200;
 
       }
     }

@@ -89,14 +89,32 @@ class ImgFigure extends React.Component{
 // 控制组件
 class ControllerUnit extends React.Component{
     handleClick(e){
+        /*如果点击的是当前正在选中状态的按钮，就反转图片，
+        否则将按钮对应的图片居中显示*/
+        if (this.props.arrange.isCenter){
+            this.props.inverse();
+        }else {
+            this.props.center();
+        }
 
         e.preventDefault();
         e.stopPropagation();
     }
 
     render(){
+        var controllerUnitClassName = 'nav-item';
+
+        // 如果对应的是居中的图片，显示控制按钮的居中状态
+        if(this.props.arrange.isCenter){
+            controllerUnitClassName += ' is-center';
+
+            // 如果同时显示的是反转图片，则显示控制按钮的反转状态
+            if(this.props.arrange.isInverse){
+                controllerUnitClassName += ' is-inverse';
+            }
+        }
         return (
-            <span className="nav-item"
+            <span className={controllerUnitClassName}
             onClick={this.handleClick.bind(this)}></span>
         );
     }
@@ -122,7 +140,7 @@ class AppComponent extends React.Component {
 
             // 获取顶部图片index并处理
             imgsArrangeTopArr = [],
-            topImgNum = Math.ceil(Math.random() * 2),  // 取一个或者不取
+            topImgNum = Math.floor(Math.random() * 2),  // 取一个或者不取
             topImgSpliceIndex = 0,
 
         // 获取居中图片index并居中处理
@@ -176,6 +194,8 @@ class AppComponent extends React.Component {
                 };
             }
         }
+
+        // debugger;
 
         // 将取出的数组元素修改之后放回去
         // 顶部图片
@@ -323,7 +343,10 @@ class AppComponent extends React.Component {
                 ref={'imgFigure'+index} inverse={this.inverse(index)}
                 center={this.center(index)}/>);
 
-            controllerUnits.push(<ControllerUnit/>);
+            controllerUnits.push(<ControllerUnit key={index}
+                arrange={this.state.imgsArrangeArr[index]}
+                inverse={this.inverse(index)}
+                center={this.center(index)}/>);
         }.bind(this));
         return (
             <section className="stage" ref="stage">
