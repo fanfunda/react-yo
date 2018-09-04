@@ -86,6 +86,22 @@ class ImgFigure extends React.Component{
     }
 }
 
+// 控制组件
+class ControllerUnit extends React.Component{
+    handleClick(e){
+
+        e.preventDefault();
+        e.stopPropagation();
+    }
+
+    render(){
+        return (
+            <span className="nav-item"
+            onClick={this.handleClick.bind(this)}></span>
+        );
+    }
+}
+
 //主要的舞台组件
 class AppComponent extends React.Component {
     /*
@@ -306,6 +322,8 @@ class AppComponent extends React.Component {
                 arrange={this.state.imgsArrangeArr[index]}
                 ref={'imgFigure'+index} inverse={this.inverse(index)}
                 center={this.center(index)}/>);
+
+            controllerUnits.push(<ControllerUnit/>);
         }.bind(this));
         return (
             <section className="stage" ref="stage">

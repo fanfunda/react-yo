@@ -1,4 +1,11 @@
-
+@font-face {
+  font-family: "icons-turn-arrow";
+  /*引用字体图标  eot适配IE  woff主要用于chrome和Firefox  ttf可于chrome、opera、safari、Firefox、Android和iOS 4.2以上使用 svg可用于iOS 4.1使用*/
+  src: url("../fonts/icons/turn-arrow.eot") format("embedded-opentype"),
+       url("../fonts/icons/turn-arrow.woff") format("woff"),
+       url("../fonts/icons/turn-arrow.ttf") format("truetype"),
+       url("../fonts/icons/turn-arrow.svg") format("svg");
+}
 /* Base Application Styles */
 html, body {
   width: 100%;
@@ -30,7 +37,7 @@ html, body {
   overflow: hidden;
 
   background-color: #ddd;
-
+  /*视距，增强3D效果*/
   perspective: 1800px;
   @at-root{
     .img-figure{
@@ -44,11 +51,15 @@ html, body {
       box-sizing: border-box;
       cursor: pointer;
 
+      /*基准点 三个数值分别为X轴Y轴Z轴的原点*/
       transform-origin: 0 50% 0;
+      /*3D转换*/
       transform-style: preserve-3d;
+      /*当transform left top 发生变化时，在0.6秒内以慢速开始和结束的过渡效果*/
       transition: transform .6s ease-in-out, left .6s ease-in-out, top .6s ease-in-out;
 
       &.is-inverse {
+        /*沿X轴平移320px,沿Y轴旋转180度，产生抖动反转效果*/
         transform: translate(320px)  rotateY(180deg);
       }
     }
@@ -98,7 +109,7 @@ html, body {
 
   text-align: center;
   @at-root {
-    .nav-item{
+    .nav-item {
       display: inline-block;
       margin: 0 5px;
       width: 30px;
@@ -119,12 +130,11 @@ html, body {
         background-color: #888;
 
         &::after{
-
+          content: "\e600";
+          font-family: "icons-turn-arrow";
           color: #fff;
           line-height: 30px;
           font-size: 80%;
-
-
 
           -webkit-font-smoothing: antialiased;
           -moz-osx-font-smoothing: grayscale;
